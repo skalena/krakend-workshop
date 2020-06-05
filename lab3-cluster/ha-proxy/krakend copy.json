@@ -1,0 +1,35 @@
+{
+    "version": "2",
+    "endpoints": [
+        {
+            "endpoint": "/hello/{user}",
+            "backend": [
+                {
+                    "url_pattern": "/users/{user}",
+                    "host": ["https://api.github.com"]
+                }
+            ]
+        },
+        {
+            "endpoint": "/health",
+            "extra_config": {
+            "github.com/devopsfaith/krakend/proxy": {
+                "static": {
+                "data": {
+                    "status": "OK"
+                },
+                "strategy": "always"
+                }
+            }
+            },
+            "backend": [
+            {
+                "url_pattern": "/__debug",
+                "host": [
+                    "http://localhost:8080"
+                ]
+            }
+            ]
+        }
+        ]
+}

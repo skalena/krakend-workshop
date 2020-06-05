@@ -1,0 +1,130 @@
+{
+    "version": 2,
+    "extra_config": {},
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "no-op",
+    "name": "SkillsAPI",
+    "endpoints": [{
+            "endpoint": "/hello/{user}",
+            "backend": [{
+                "url_pattern": "/users/{user}",
+                "host": ["https://api.github.com"]
+            }]
+        },
+        {
+            "endpoint": "/health",
+            "extra_config": {
+                "github.com/devopsfaith/krakend/proxy": {
+                    "static": {
+                        "data": {
+                            "status": "OK"
+                        },
+                        "strategy": "always"
+                    }
+                }
+            },
+            "backend": [{
+                "url_pattern": "/__debug",
+                "host": [
+                    "http://localhost:8080"
+                ]
+            }]
+        },
+
+        {
+            "endpoint": "/jobs",
+            "method": "GET",
+            "extra_config": {},
+
+            "output_encoding": "no-op",
+            "concurrent_calls": 1,
+            "backend": [{
+                "url_pattern": "/v1/jobs",
+                "encoding": "no-op",
+                "sd": "static",
+                "extra_config": {},
+                "method": "GET",
+                "host": [
+                    "http://api.dataatwork.org"
+                ]
+            }],
+            "querystring_params": [
+                "offset",
+                "limit"
+            ]
+        },
+        {
+            "endpoint": "/skills",
+            "method": "GET",
+            "extra_config": {},
+            "output_encoding": "no-op",
+            "concurrent_calls": 1,
+            "backend": [{
+                "url_pattern": "/v1/skills",
+                "encoding": "no-op",
+                "sd": "static",
+                "extra_config": {},
+                "method": "GET",
+                "host": [
+                    "http://api.dataatwork.org"
+                ],
+                "disable_host_sanitize": false
+            }]
+        },
+        {
+            "endpoint": "/jobs-skills",
+            "method": "GET",
+            "extra_config": {},
+            "output_encoding": "JSON",
+            "concurrent_calls": 1,
+
+            "backend": [{
+                    "url_pattern": "/v1/jobs",
+                    "sd": "static",
+                    "extra_config": {},
+                    "method": "GET",
+                    "is_collection": true,
+                    "mapping": {
+                        "collection": "jobs"
+                    },
+                    "host": [
+                        "http://api.dataatwork.org"
+                    ]
+                },
+                {
+                    "url_pattern": "/v1/skills",
+                    "sd": "static",
+                    "extra_config": {},
+                    "method": "GET",
+                    "is_collection": true,
+                    "mapping": {
+                        "collection": "skills"
+                    },
+                    "host": [
+                        "http://api.dataatwork.org"
+                    ]
+                }
+
+            ]
+        },
+        {
+            "endpoint": "/jobs/{id}",
+            "method": "GET",
+            "extra_config": {},
+            "output_encoding": "no-op",
+            "concurrent_calls": 1,
+            "backend": [{
+                "url_pattern": "/v1/jobs/{id}",
+                "encoding": "no-op",
+                "sd": "static",
+                "extra_config": {},
+                "method": "GET",
+                "host": [
+                    "http://api.dataatwork.org"
+                ],
+                "disable_host_sanitize": false
+            }]
+        }
+    ]
+}

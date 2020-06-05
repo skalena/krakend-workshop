@@ -1,0 +1,20 @@
+version: "3"
+services:
+    balancer:
+        image: haproxy:1.7
+        volumes:
+            - ".//haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg"
+        ports:
+            - "80:80"
+    krakend_1:
+        image: devopsfaith/krakend
+        # We enable the debug endpoint so krakend offers the /__debug endpoint.
+        # This option is production-safe (it only answers with a "pong")
+        command: run -d -c krakend.json
+        volumes:
+            - "./:/etc/krakend/"
+    krakend_2:
+        image: devopsfaith/krakend
+        command: run -d -c krakend.json
+        volumes:
+            - "./:/etc/krakend/"

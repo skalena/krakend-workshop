@@ -1,0 +1,36 @@
+version: "3"
+
+networks:
+  cluster-haproxy_default:
+    external: true
+services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.2
+    networks:
+      - cluster-haproxy_default
+    labels:
+      - traefik.http.services.traefik-public.loadbalancer.server.port=8080
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker --entrypoints.http.address=:80 --accesslog
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+  krakend_ce:
+    image: skalena:krakend
+    networks:
+      - cluster-haproxy_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:localhost"
+      - "traefik.port=80"
+      - "traefik.docker.network=cluster-haproxy_default"
+    volumes:
+      - ./krakend:/etc/krakend/
+    #ports:
+    # - "7780:7780"
