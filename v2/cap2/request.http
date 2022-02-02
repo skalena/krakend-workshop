@@ -1,0 +1,3 @@
+# http://localhost:8080/repos/skalena
+
+http://localhost:8080/issues?q=addClass+in:file+language:js+repo:jquery/jquery

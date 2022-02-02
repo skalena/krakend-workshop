@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "extra_config": {},
+  "tag-info-edgar": "este é um teste",
+  "api-info": "Esta eh uma api xyz",
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "no-op",
+  "name": "GithubAPI",
+  "endpoints": [
+    {
+      "endpoint": "/edgar",
+      "method": "GET",
+      "output_encoding": "no-op",
+      "extra_config": {},
+      "backend": [
+        {
+          "url_pattern": "/users/edgars",
+          "encoding": "no-op",
+          "method": "GET",
+          "extra_config": {},
+          "host": [
+            "https://api.github.com"
+          ],
+          "disable_host_sanitize": false
+        }
+      ]
+    }
+  ]
+}
