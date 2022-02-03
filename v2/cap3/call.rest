@@ -1,0 +1,12 @@
+#https://github.com/backend-br/vagas/issues
+#https://github.com/frontendbr/vagas 
+
+#https://api.github.com/repos/frontendbr/vagas/issues
+
+#https://api.github.com/repos/backend-br/vagas/issues
+
+#http://localhost:8080/devjobs
+
+
+
+#http://localhost:8080/deny

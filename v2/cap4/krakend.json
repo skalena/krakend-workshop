@@ -1,0 +1,89 @@
+{
+    "version": 2,
+    "extra_config": {},
+    "timeout": "3000ms",
+    "cache_ttl": "300s",
+    "output_encoding": "json",
+    "name": "GithubAPI",
+    "endpoints": [
+      {
+        "endpoint": "/edgar",
+        "method": "GET",
+        "output_encoding": "no-op",
+        "extra_config": {},
+        "backend": [
+          {
+            "url_pattern": "/users/edgars",
+            "encoding": "no-op",
+            "method": "GET",
+            "extra_config": {},
+            "host": [
+              "https://api.github.com"
+            ],
+            "disable_host_sanitize": false
+          }
+        ]
+      },
+      {
+        "endpoint": "/repos/{org}",
+        "method": "GET",
+        "output_encoding": "no-op",
+        "extra_config": {},
+        "backend": [
+          {
+            "url_pattern": "/",
+            "encoding": "no-op",
+            "method": "GET",
+            "extra_config": {}
+          }
+        ]
+      },
+      {
+        "endpoint": "/issues",
+        "querystring_params": [
+          "q"
+        ],
+        "method": "GET",
+        "output_encoding": "no-op",
+        "extra_config": {},
+        "backend": [
+          {
+            "url_pattern": "/search/issues",
+            "encoding": "no-op",
+            "method": "GET",
+            "extra_config": {},
+            "host": [
+              "https://api.github.com"
+            ],
+            "disable_host_sanitize": false
+          }
+        ]
+      },
+      {
+        "endpoint": "/devjobs",
+        "backend": [{
+                "url_pattern": "/repos/frontendbr/vagas/issues",
+                "is_collection": true,
+                "mapping": {
+                    "collection": "frontends"
+                },
+                "host": [
+                    "https://api.github.com"
+                ]
+            },
+            {
+                "url_pattern": "/repos/backend-br/vagas/issues",
+                "is_collection": true,
+                "mapping": {
+                    "collection": "backends"
+                },
+                "host": [
+                    "https://api.github.com"
+                ]
+            }
+
+        ]
+    }
+
+    ]
+  }

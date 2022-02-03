@@ -1,0 +1,23 @@
+# This is not a configuration ready for production!!!
+# Just a quick test to balance traffic to 2 krakend nodes
+
+defaults
+   log     global
+   mode    http
+   option  httplog
+   option  dontlognull
+   timeout connect 100
+   timeout client  1000
+   timeout server  1000
+
+frontend api_gateway
+   bind :80
+   use_backend nodes
+
+backend nodes
+   mode http
+   balance roundrobin
+   option httpchk GET /health
+   server krakend_1 krakend_1:8080 check
+   server krakend_2 krakend_2:8080 check
+
